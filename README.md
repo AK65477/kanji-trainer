@@ -17,6 +17,14 @@ It is not trying to replace full kanji courses such as WaniKani or dictionary
 apps such as Kanji Study. Its narrower goal is immediate reading feel: see a
 highlighted kanji word or expression inside a sentence, choose its reading
 quickly, and let the SRS bring it back when the memory is likely to fade.
+> [!NOTE]
+> The bundled cards, answer choices, and translations were generated and then
+> automatically validated with structural checks. They are usable seed data, but
+> some items may still feel awkward in real reading practice. In particular,
+> there may be cases where a more natural reading appears as a distractor, or
+> where multiple readings are technically possible but one is more natural in the
+> sentence. These cases are being collected and corrected over time. Please report
+> them with the **Card quality issue** template.
 
 ## Download
 
@@ -175,6 +183,7 @@ Code: MIT License. See `LICENSE`.
 
 Bundled study data and any EDRDG-derived or EDRDG-informed data: CC BY-SA 4.0.
 See `NOTICE.md`.
+
 
 
 
