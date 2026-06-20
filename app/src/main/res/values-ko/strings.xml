@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kanji Trainer</string>
+    <string name="home_subtitle">문장 속에서 한자 읽기를 연습하는 앱입니다.\n망각곡선에 맞춰 복습 시점을 자동으로 잡아, 잊을 때쯤 다시 보여줍니다.</string>
+    <string name="home_mastered_kanji">Mastered 한자</string>
+    <string name="home_today_reviews">오늘 복습</string>
+    <string name="home_review_count">%1$d장</string>
+    <string name="home_minute_count">%1$d분</string>
+    <string name="home_srs_title">한자 복습</string>
+    <string name="home_srs_body">강조된 한자나 표현을 어떻게 읽는지 고르세요. 빠르고 정확하게 맞힌 카드만 Mastered로 쌓입니다.</string>
+    <string name="home_general_session">일반 한자 세션</string>
+    <string name="home_name_kanji">사람 이름 한자</string>
+    <string name="home_collection">한자 컬렉션</string>
+    <string name="sources_title">출처와 라이선스</string>
+    <string name="back">뒤로</string>
+    <string name="sources_code_title">앱 코드</string>
+    <string name="sources_code_body">Kanji Trainer의 앱 코드는 MIT License로 배포됩니다.</string>
+    <string name="sources_data_title">학습 데이터</string>
+    <string name="sources_data_body">앱에 포함된 한자와 카드 seed 데이터는 코드와 별도 데이터 저작물로 취급합니다. 공개 배포판에서는 Creative Commons Attribution-ShareAlike 4.0 International(CC BY-SA 4.0) 조건으로 배포합니다.</string>
+    <string name="sources_references_title">참고 자료</string>
+    <string name="sources_references_body">한자 읽기, 분류, 시각 구성요소 검토에는 EDRDG 계열 공개 자료를 참고할 수 있습니다: KANJIDIC2, RADKFILE/KRADFILE, JMdict/EDICT 문서.</string>
+    <string name="sources_edrdg_title">EDRDG</string>
+    <string name="sources_edrdg_body">EDRDG 자료는 Creative Commons Attribution-ShareAlike 4.0 조건으로 제공됩니다. 이 앱은 EDRDG 또는 기여자의 보증이나 후원을 의미하지 않습니다.\n\nhttps://www.edrdg.org/edrdg/licence.html</string>
+    <string name="sources_sentences_title">문장 예문</string>
+    <string name="sources_sentences_body">향후 Tanaka Corpus 또는 Tatoeba 문장을 가져오거나 각색하는 경우, 해당 출처와 라이선스를 릴리스 노트와 이 화면에 함께 표시합니다.</string>
+    <string name="intro_dialog_title">시작하기 전에</string>
+    <string name="intro_dialog_body">이 앱은 문장 속 한자 단어와 표현의 읽기를 빠르게 알아보는 연습에 초점을 둡니다.
+
+권장 학습자 수준: 일본어 소리에 조금 익숙해지기 시작한 입문자 이상, 그리고 히라가나와 카타카나를 읽을 수 있는 분.</string>
+    <string name="intro_dialog_confirm">알겠습니다</string>
+</resources>

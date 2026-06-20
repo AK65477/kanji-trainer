@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android Auto Backup + Device-to-Device transfer for Kanji Trainer.
+
+  With no <include> elements, all eligible app data is backed up by default.
+  That covers the entire databases/ directory (kanji_trainer.db together with
+  its -wal/-shm files, so the restored database is internally consistent) and
+  shared_prefs (SRS settings, intro flag). Cache and no_backup data are excluded
+  automatically. Backup data goes only to the user's own Google account.
+-->
+<data-extraction-rules>
+    <cloud-backup />
+    <device-transfer />
+</data-extraction-rules>

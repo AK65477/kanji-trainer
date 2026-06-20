@@ -1,0 +1,25 @@
+﻿name: Card quality issue
+description: Report an incorrect reading, translation, distractor, or awkward example sentence
+title: "[Card]: "
+labels: [content]
+body:
+  - type: textarea
+    id: card
+    attributes:
+      label: Which card?
+      description: Include the Japanese sentence, highlighted word, or screenshot if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What should be improved?
+      description: Mention wrong reading, translation, distractor, phrasing, or difficulty.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix
+    validations:
+      required: false

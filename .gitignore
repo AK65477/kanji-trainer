@@ -1,0 +1,52 @@
+# Build
+**/build/
+**/.gradle/
+.gradle/
+build/
+.kotlin/
+local.properties
+
+# Local/private app variants not part of the public Kanji Trainer repo
+conversation-app/
+feature/tracker/
+feature/suggestion/
+learning_logs/
+tools/
+.claude/
+
+# Private planning docs from the original personal language-trainer project
+DESIGN.md
+MVP_CHECKLIST.md
+BUILD_NOTES.md
+
+# Local screenshots and UI dumps
+*.png
+!app/src/main/res/**/*.png
+!kanji_app_icon.png
+window*.xml
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.fleet/
+
+# Android
+*.apk
+*.aab
+*.ap_
+*.dex
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Keystore
+*.jks
+*.keystore
+*.p12
+*.pfx
+keystore.properties
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kanji Trainer</string>
+    <string name="home_subtitle">文の中で漢字語と表現の読みを練習する小さなSRSアプリです。</string>
+    <string name="home_mastered_kanji">定着した漢字</string>
+    <string name="home_today_reviews">今日の復習</string>
+    <string name="home_review_count">%1$d枚</string>
+    <string name="home_minute_count">%1$d分</string>
+    <string name="home_srs_title">漢字SRS</string>
+    <string name="home_srs_body">文の中でハイライトされた漢字や表現の読みを選びます。速く安定した正解だけがMasteredに加算されます。</string>
+    <string name="home_general_session">一般漢字セッション</string>
+    <string name="home_name_kanji">人名用漢字</string>
+    <string name="home_collection">漢字コレクション</string>
+    <string name="sources_title">出典とライセンス</string>
+    <string name="back">戻る</string>
+    <string name="sources_code_title">アプリコード</string>
+    <string name="sources_code_body">Kanji TrainerのアプリコードはMIT Licenseで配布されます。</string>
+    <string name="sources_data_title">学習データ</string>
+    <string name="sources_data_body">同梱された漢字とカードのseedデータはコードとは別のデータ著作物として扱います。公開版ではCreative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)の条件で配布します。</string>
+    <string name="sources_references_title">参考資料</string>
+    <string name="sources_references_body">漢字の読み、分類、視覚構成要素の確認には、KANJIDIC2、RADKFILE/KRADFILE、JMdict/EDICT文書などEDRDG系の公開資料を参照する場合があります。</string>
+    <string name="sources_edrdg_title">EDRDG</string>
+    <string name="sources_edrdg_body">EDRDG資料はCreative Commons Attribution-ShareAlike 4.0の条件で提供されています。このアプリはEDRDGまたは貢献者による保証や後援を意味しません。\n\nhttps://www.edrdg.org/edrdg/licence.html</string>
+    <string name="sources_sentences_title">例文</string>
+    <string name="sources_sentences_body">将来、Tanaka CorpusまたはTatoebaの文を取り込む・翻案する場合は、出典とライセンスをリリースノートとこの画面に表示します。</string>
+    <string name="intro_dialog_title">はじめる前に</string>
+    <string name="intro_dialog_body">このアプリは、文の中で漢字語や表現の読みをすばやく認識する練習に焦点を当てています。
+
+推奨レベル: 日本語の音に少し慣れ始めた入門者以上で、ひらがな・カタカナを読める方。</string>
+    <string name="intro_dialog_confirm">わかりました</string>
+</resources>

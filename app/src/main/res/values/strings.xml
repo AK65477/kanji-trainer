@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kanji Trainer</string>
+    <string name="home_subtitle">A small SRS app focused on reading kanji words and expressions in sentences.</string>
+    <string name="home_mastered_kanji">Mastered kanji</string>
+    <string name="home_today_reviews">Reviewed today</string>
+    <string name="home_review_count">%1$d cards</string>
+    <string name="home_minute_count">%1$d min</string>
+    <string name="home_srs_title">Kanji SRS</string>
+    <string name="home_srs_body">Choose the reading of the highlighted kanji or expression in context. Only fast, stable answers count toward Mastered.</string>
+    <string name="home_general_session">General kanji session</string>
+    <string name="home_name_kanji">Name kanji</string>
+    <string name="home_collection">Kanji collection</string>
+    <string name="sources_title">Sources and Licenses</string>
+    <string name="back">Back</string>
+    <string name="sources_code_title">App code</string>
+    <string name="sources_code_body">The Kanji Trainer app code is distributed under the MIT License.</string>
+    <string name="sources_data_title">Study data</string>
+    <string name="sources_data_body">The bundled kanji and card seed data is treated as a separate data work from the code. Public releases distribute it under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</string>
+    <string name="sources_references_title">References</string>
+    <string name="sources_references_body">Kanji readings, classification, and visual component checks may reference public EDRDG-family materials: KANJIDIC2, RADKFILE/KRADFILE, and JMdict/EDICT documentation.</string>
+    <string name="sources_edrdg_title">EDRDG</string>
+    <string name="sources_edrdg_body">EDRDG materials are provided under Creative Commons Attribution-ShareAlike 4.0. This app does not imply endorsement or warranty by EDRDG or its contributors.\n\nhttps://www.edrdg.org/edrdg/licence.html</string>
+    <string name="sources_sentences_title">Example sentences</string>
+    <string name="sources_sentences_body">If future releases import or adapt sentences from the Tanaka Corpus or Tatoeba, their sources and licenses will be shown in release notes and on this screen.</string>
+    <string name="intro_dialog_title">Before you start</string>
+    <string name="intro_dialog_body">This app focuses on quickly recognizing the readings of kanji words and expressions inside sentences.
+
+Recommended level: learners who have started building an ear for Japanese and can read hiragana and katakana.</string>
+    <string name="intro_dialog_confirm">Got it</string>
+</resources>
