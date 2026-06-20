@@ -36,6 +36,40 @@ Android application ID:
 io.github.ak65477.kanjitrainer
 ```
 
+## Install And Update With Obtainium
+
+Kanji Trainer is a good fit for [Obtainium](https://github.com/ImranR98/Obtainium),
+which can track GitHub Releases and notify you when a new APK is available.
+
+Use this repository URL in Obtainium:
+
+```text
+https://github.com/AK65477/kanji-trainer
+```
+
+Release asset name:
+
+```text
+app-release.apk
+```
+
+## Verify The APK
+
+For the current `v0.1.0` release, the APK file hash is:
+
+```text
+1a8a260f2f8efb47f5fd13f932efc000f05179e747b03aeb54708054cfe4d54a
+```
+
+The signing certificate SHA-256 is:
+
+```text
+d75d00fa3af1515f8075f5e101e9861eb0cb7382381b53f463c71976c1d960ee
+```
+
+This repository contains the source code, release notes, privacy policy, and
+license notices so users can inspect what the APK is built from.
+
 ## Recommended Learner Level
 
 Kanji Trainer is best for learners who already know hiragana and katakana and
@@ -132,9 +166,6 @@ Release signing details are in `docs/RELEASE_SIGNING.md`.
 
 Kanji Trainer is local-first and does not collect or transmit personal data. See `PRIVACY.md`.
 
-## CI
-
-GitHub Actions runs `:core:srs:test` and `:app:assembleDebug` on pushes and pull requests to `main`.
 
 ## Attribution And License
 
@@ -144,5 +175,6 @@ Code: MIT License. See `LICENSE`.
 
 Bundled study data and any EDRDG-derived or EDRDG-informed data: CC BY-SA 4.0.
 See `NOTICE.md`.
+
 
 
