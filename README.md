@@ -1,7 +1,13 @@
-﻿# Kanji Trainer
+﻿<p align="center">
+  <img src="kanji_app_icon.png" alt="Kanji Trainer app icon" width="120" height="120">
+</p>
 
-[![License: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
-[![Study data: CC BY-SA 4.0](https://img.shields.io/badge/study%20data-CC%20BY--SA%204.0-lightgrey.svg)](NOTICE.md)
+<h1 align="center">Kanji Trainer</h1>
+
+<p align="center">
+  <a href="LICENSE"><img alt="Code license: MIT" src="https://img.shields.io/badge/code-MIT-blue.svg"></a>
+  <a href="NOTICE.md"><img alt="Study data: CC BY-SA 4.0" src="https://img.shields.io/badge/study%20data-CC%20BY--SA%204.0-lightgrey.svg"></a>
+</p>
 
 Kanji Trainer is a small Android app for learning kanji by reading them inside
 real sentence context from day one. It focuses on fast recognition of kanji words
@@ -138,4 +144,5 @@ Code: MIT License. See `LICENSE`.
 
 Bundled study data and any EDRDG-derived or EDRDG-informed data: CC BY-SA 4.0.
 See `NOTICE.md`.
+
 
