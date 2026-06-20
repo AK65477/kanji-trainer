@@ -25914,7 +25914,7 @@
       "correctReading": "よい",
       "distractors": [
         "りょうい",
-        "いい",
+        "よえ",
         "ようい"
       ],
       "translationEn": "A good result.",
@@ -25933,7 +25933,7 @@
       "distractors": [
         "りょうい",
         "ようい",
-        "いい"
+        "よえ"
       ],
       "translationEn": "Good news.",
       "linkedKanjiChars": [
@@ -39125,7 +39125,7 @@
       "correctReading": "さびしい",
       "distractors": [
         "せきしい",
-        "さみしい",
+        "さびじい",
         "さびい"
       ],
       "translationEn": "It was a lonely night.",
