@@ -14,11 +14,11 @@
     <string name="ok">わかりました</string>
     <string name="help_content_description">ヘルプ</string>
     <string name="how_read">ハイライトされた語の読みを選んでください</string>
-    <string name="skipped_will_return">スキップしました。このカードは後でまた出ます。</string>
-    <string name="skipped_abandoned">30秒経過したためスキップしました。考え込みすぎず答えてみてください。このカードはまた出ます。</string>
+    <string name="skipped_will_return">スキップしました。このカードは後で再出題されます。</string>
+    <string name="skipped_abandoned">30秒経過したためスキップしました。考え込みすぎず答えてみてください。このカードは再出題されます。</string>
     <string name="unsure">わからない</string>
     <string name="correct_answer">答え: %1$s</string>
-    <string name="correct_answer_wrong_pick">答え: %1$s。近いうちにまた出ます。</string>
+    <string name="correct_answer_wrong_pick">答え: %1$s。近いうちに再出題されます。</string>
     <string name="next">次へ</string>
     <string name="session_finished">セッション完了</string>
     <string name="summary_mastered">すぐ読めた（2秒未満）</string>
@@ -64,4 +64,5 @@
     <string name="show_meaning">意味を見る</string>
     <string name="hide_meaning">意味を隠す</string>
 </resources>
+
 

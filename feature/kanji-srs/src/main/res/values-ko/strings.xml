@@ -14,11 +14,11 @@
     <string name="ok">알겠습니다</string>
     <string name="help_content_description">도움말</string>
     <string name="how_read">강조된 단어의 읽기를 고르세요</string>
-    <string name="skipped_will_return">건너뛴 카드예요. 나중에 다시 나옵니다.</string>
-    <string name="skipped_abandoned">30초가 지나 건너뛰었습니다. 너무 오래 고민하지 말고 답해 보세요. 이 카드는 다시 나옵니다.</string>
+    <string name="skipped_will_return">건너뛴 카드예요. 나중에 다시 출제됩니다.</string>
+    <string name="skipped_abandoned">30초가 지나 건너뛰었습니다. 너무 오래 고민하지 말고 답해 보세요. 이 카드는 다시 출제됩니다.</string>
     <string name="unsure">모르겠어요</string>
     <string name="correct_answer">정답: %1$s</string>
-    <string name="correct_answer_wrong_pick">정답: %1$s. 곧 다시 만나게 됩니다.</string>
+    <string name="correct_answer_wrong_pick">정답: %1$s. 곧 다시 출제됩니다.</string>
     <string name="next">다음</string>
     <string name="session_finished">세션 완료</string>
     <string name="summary_mastered">바로 인식 (&lt; 2초)</string>
@@ -64,4 +64,5 @@
     <string name="show_meaning">뜻 보기</string>
     <string name="hide_meaning">뜻 숨기기</string>
 </resources>
+
 

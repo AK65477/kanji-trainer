@@ -14,11 +14,11 @@
     <string name="ok">Got it</string>
     <string name="help_content_description">Help</string>
     <string name="how_read">Choose the reading of the highlighted word</string>
-    <string name="skipped_will_return">Skipped. This card will come back later.</string>
-    <string name="skipped_abandoned">Skipped after 30s. Try to answer without overthinking. This card will come back.</string>
+    <string name="skipped_will_return">Skipped. This card will be shown again later.</string>
+    <string name="skipped_abandoned">Skipped after 30s. Try to answer without overthinking. This card will be shown again.</string>
     <string name="unsure">I do not know</string>
     <string name="correct_answer">Answer: %1$s</string>
-    <string name="correct_answer_wrong_pick">Answer: %1$s. You will meet it again soon.</string>
+    <string name="correct_answer_wrong_pick">Answer: %1$s. This card will be shown again soon.</string>
     <string name="next">Next</string>
     <string name="session_finished">Session complete</string>
     <string name="summary_mastered">Mastered (&lt; 2s)</string>
@@ -64,4 +64,5 @@
     <string name="show_meaning">Show meaning</string>
     <string name="hide_meaning">Hide meaning</string>
 </resources>
+
 
