@@ -27550,7 +27550,7 @@
       "translationKo": "밝은 아침."
     },
     {
-      "sentenceJp": "明日会う。",
+      "sentenceJp": "明日会おう。",
       "targetText": "明日",
       "targetStart": 0,
       "targetEnd": 2,
@@ -27560,13 +27560,13 @@
         "あすか",
         "めいじつ"
       ],
-      "translationEn": "Meet tomorrow.",
+      "translationEn": "Let's meet tomorrow.",
       "linkedKanjiChars": [
         "明",
         "日",
         "会"
       ],
-      "translationKo": "내일 만나다."
+      "translationKo": "내일 만나자."
     },
     {
       "sentenceJp": "暗い部屋。",
