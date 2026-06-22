@@ -1,5 +1,20 @@
 ﻿# Release Notes
 
+## v0.1.0 — updated build (versionCode 2)
+
+Scheduling fix, distributed as an updated `v0.1.0` APK.
+
+### Changes
+
+- **Due reviews now come before new cards in a session.** Previously every
+  new card was stamped with the import time, so cards you had already studied
+  were buried behind the entire unstudied backlog and rarely resurfaced. Now a
+  card you just missed reappears on its due date, and new cards fill the
+  remaining slots (capped per session) so the review load stays manageable.
+- No database changes. Existing learners keep all of their progress after
+  updating; the build is signed with the same key, so it installs as an
+  in-place update over an earlier `v0.1.0` install.
+
 ## v0.1.0
 
 Initial public MVP.
@@ -26,10 +41,10 @@ Only install APKs from this repository's Releases page.
 
 ### Verification
 
-Release APK SHA-256:
+Release APK SHA-256 (versionCode 2):
 
 ```text
-1a8a260f2f8efb47f5fd13f932efc000f05179e747b03aeb54708054cfe4d54a
+f2dd29c823c51faed6c4832cb5dc5e02df760e8c7da910e1de1ba1d12b5829d0
 ```
 
 Signing certificate SHA-256:
