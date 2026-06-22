@@ -18,6 +18,7 @@ data class SrsConfig(
     val sluggishIntervalMultiplier: Double = SLUGGISH_INTERVAL_MULTIPLIER,
     val qualifyingStreak: Int = QUALIFYING_STREAK,
     val masteryMinCards: Int = MASTERY_MIN_CARDS,
+    val maxNewCardsPerSession: Int = MAX_NEW_CARDS_PER_SESSION,
 ) {
     companion object {
         const val DEFAULT_MASTERED_MS = 2000L
@@ -40,6 +41,14 @@ data class SrsConfig(
 
         /** A kanji is mastered when this many of its cards are qualifying. */
         const val MASTERY_MIN_CARDS = 2
+
+        /**
+         * Upper bound on brand-new cards introduced per session. Due reviews are
+         * always served first; new cards only fill the leftover slots, capped here
+         * so a heavy session cannot flood the next day with reviews. Keeping the
+         * intake bounded is what makes the review schedule stay manageable.
+         */
+        const val MAX_NEW_CARDS_PER_SESSION = 10
 
         val Default: SrsConfig = SrsConfig()
     }
