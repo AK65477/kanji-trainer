@@ -26,13 +26,19 @@ interface SrsDao {
     fun observeAllStates(): Flow<List<SrsStateEntity>>
 
     /**
-     * Due cards for the **general (JLPT) deck** — excludes any card linked to a
-     * name-only (JINMEI) kanji so the name deck stays fully separate.
+     * Due **review** cards for the **general (JLPT) deck** — cards already seen at
+     * least once (bucket != NEW) whose interval has elapsed. Excludes name-only
+     * (JINMEI) cards so the name deck stays separate. Ordered most-overdue first.
+     *
+     * New cards are deliberately excluded here and fetched via [getNewCardsGeneral]
+     * so the session composer can serve due reviews before introducing new cards;
+     * see SrsSessionPlanner.
      */
     @Query(
         """
         SELECT * FROM srs_state
         WHERE next_due_at <= :nowEpochMs
+          AND current_bucket != 'NEW'
           AND card_id NOT IN (
             SELECT l.card_id FROM card_kanji_link l
             JOIN kanji k ON k.id = l.kanji_id
@@ -42,16 +48,37 @@ interface SrsDao {
         LIMIT :limit
         """,
     )
-    suspend fun getDueCardsGeneral(nowEpochMs: Long, limit: Int): List<SrsStateEntity>
+    suspend fun getDueReviewsGeneral(nowEpochMs: Long, limit: Int): List<SrsStateEntity>
 
     /**
-     * Due cards for the **name-only (JINMEI) deck** — only cards linked to a
-     * name-only kanji.
+     * Brand-new (never-reviewed) cards for the **general (JLPT) deck**, in
+     * introduction order (card_id ascending = seed/curriculum order). Excludes
+     * name-only (JINMEI) cards.
+     */
+    @Query(
+        """
+        SELECT * FROM srs_state
+        WHERE current_bucket = 'NEW'
+          AND card_id NOT IN (
+            SELECT l.card_id FROM card_kanji_link l
+            JOIN kanji k ON k.id = l.kanji_id
+            WHERE k.usage = 'JINMEI'
+          )
+        ORDER BY card_id ASC
+        LIMIT :limit
+        """,
+    )
+    suspend fun getNewCardsGeneral(limit: Int): List<SrsStateEntity>
+
+    /**
+     * Due **review** cards for the **name-only (JINMEI) deck** — only cards linked
+     * to a name-only kanji, already seen (bucket != NEW) and now due.
      */
     @Query(
         """
         SELECT * FROM srs_state
         WHERE next_due_at <= :nowEpochMs
+          AND current_bucket != 'NEW'
           AND card_id IN (
             SELECT l.card_id FROM card_kanji_link l
             JOIN kanji k ON k.id = l.kanji_id
@@ -61,7 +88,26 @@ interface SrsDao {
         LIMIT :limit
         """,
     )
-    suspend fun getDueCardsNameOnly(nowEpochMs: Long, limit: Int): List<SrsStateEntity>
+    suspend fun getDueReviewsNameOnly(nowEpochMs: Long, limit: Int): List<SrsStateEntity>
+
+    /**
+     * Brand-new (never-reviewed) cards for the **name-only (JINMEI) deck**, in
+     * introduction order.
+     */
+    @Query(
+        """
+        SELECT * FROM srs_state
+        WHERE current_bucket = 'NEW'
+          AND card_id IN (
+            SELECT l.card_id FROM card_kanji_link l
+            JOIN kanji k ON k.id = l.kanji_id
+            WHERE k.usage = 'JINMEI'
+          )
+        ORDER BY card_id ASC
+        LIMIT :limit
+        """,
+    )
+    suspend fun getNewCardsNameOnly(limit: Int): List<SrsStateEntity>
 
     // General-deck counts: exclude cards linked to name-only (JINMEI) kanji so any
     // future "due/qualifying" stats stay JLPT-focused like the Mastered KPI.

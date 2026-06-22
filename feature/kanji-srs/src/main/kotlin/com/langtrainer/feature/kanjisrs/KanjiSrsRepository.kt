@@ -13,6 +13,7 @@ import com.langtrainer.core.model.SessionCategory
 import com.langtrainer.core.model.SrsConfig
 import com.langtrainer.core.model.SrsState
 import com.langtrainer.core.srs.SrsEngine
+import com.langtrainer.core.srs.SrsSessionPlanner
 import javax.inject.Inject
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -26,16 +27,33 @@ class KanjiSrsRepository @Inject constructor(
     private val srsEngine: SrsEngine,
 ) {
 
+    /**
+     * Builds one study session **reviews-first**: due reviews are served before any
+     * brand-new card, then new cards fill the remaining slots (capped by
+     * [SrsConfig.maxNewCardsPerSession]). This is what lets a just-failed card
+     * resurface on its due date instead of waiting behind the whole new-card
+     * backlog. See [SrsSessionPlanner].
+     */
     suspend fun fetchSession(
         limit: Int,
         nowEpochMs: Long,
         deck: Deck = Deck.GENERAL,
     ): List<CardForReview> {
-        val due = when (deck) {
-            Deck.GENERAL -> srsDao.getDueCardsGeneral(nowEpochMs = nowEpochMs, limit = limit)
-            Deck.NAME -> srsDao.getDueCardsNameOnly(nowEpochMs = nowEpochMs, limit = limit)
+        val maxNew = srsConfig.maxNewCardsPerSession
+        val dueReviews = when (deck) {
+            Deck.GENERAL -> srsDao.getDueReviewsGeneral(nowEpochMs = nowEpochMs, limit = limit)
+            Deck.NAME -> srsDao.getDueReviewsNameOnly(nowEpochMs = nowEpochMs, limit = limit)
         }
-        return due.mapNotNull { state -> state.toCardForReview() }
+        val newCards = when (deck) {
+            Deck.GENERAL -> srsDao.getNewCardsGeneral(limit = maxNew)
+            Deck.NAME -> srsDao.getNewCardsNameOnly(limit = maxNew)
+        }
+        return SrsSessionPlanner.plan(
+            dueReviews = dueReviews,
+            newCards = newCards,
+            sessionLimit = limit,
+            maxNewCards = maxNew,
+        ).mapNotNull { state -> state.toCardForReview() }
     }
 
     suspend fun fetchCardsByIds(cardIds: List<Long>): List<CardForReview> =
