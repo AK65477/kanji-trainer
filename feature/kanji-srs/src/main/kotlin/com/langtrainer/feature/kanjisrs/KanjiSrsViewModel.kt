@@ -30,10 +30,23 @@ class KanjiSrsViewModel @Inject constructor(
     /** Which deck the current session is drawing from. Drives the name-only banner. */
     private var deck: Deck = Deck.GENERAL
 
+    // --- Session-internal review drill (KPI-isolated learning step) ---
+    // Cards missed (LAPSED) during phase 1, deduped by id. After phase 1 the user
+    // can re-drill them, shuffled. The drill is reinforcement only: it never writes
+    // to SRS/mastery (the real schedule was already set in phase 1) and is held in
+    // memory, so leaving mid-drill just skips the reinforcement with no data loss.
+    private val sessionMisses = linkedMapOf<Long, CardForReview>()
+    private var drillWrong = linkedMapOf<Long, CardForReview>()
+    private var drillPass = 0
+    private var finalSummary: SessionSummary = SessionSummary.empty()
+
     fun startSession(deck: Deck = Deck.GENERAL, limit: Int = SESSION_DEFAULT_LIMIT) {
         this.deck = deck
         viewModelScope.launch {
             _state.value = UiState.Loading
+            sessionMisses.clear()
+            drillWrong = linkedMapOf()
+            drillPass = 0
             val now = System.currentTimeMillis()
             val saved = resumeStore.load(deck)
             val resumedCards = saved?.let { repository.fetchCardsByIds(it.cardIds) }.orEmpty()
@@ -97,6 +110,11 @@ class KanjiSrsViewModel @Inject constructor(
         val current = _state.value as? UiState.Reviewing ?: return
         // Re-entry guard: a slow DB write must not be re-fired by a second tap.
         if (current.isSubmitting) return
+        // Drill answers are reinforcement only — a separate path that never touches SRS.
+        if (current.isDrill) {
+            submitDrill(current, unsure = unsure, choice = choice, userPick = userPick)
+            return
+        }
         val card = current.cards.getOrNull(current.index) ?: return
 
         val responseMs = if (cardShownAtMs > 0L) now - cardShownAtMs else null
@@ -118,6 +136,10 @@ class KanjiSrsViewModel @Inject constructor(
                 wasUnsure = unsure,
             )
             val updatedSummary = current.cardSummary.update(outcome)
+            // Collect a phase-1 miss so it can be re-drilled after the section ends.
+            if (outcome == ReviewOutcome.LAPSED) {
+                sessionMisses[card.cardId] = card
+            }
 
             // Finalise session progress on every answer so leaving mid-session
             // still records the turns done so far (and updates the duration).
@@ -172,30 +194,124 @@ class KanjiSrsViewModel @Inject constructor(
 
     private suspend fun advance(current: UiState.Reviewing, nextSummary: SessionSummary) {
         val nextIndex = current.index + 1
-        val finished = nextIndex >= current.cards.size
-        _state.value = if (finished) {
-            // Final progress was already persisted by the last answer's
-            // recordSessionProgress; just detach so nothing else mutates it.
-            resumeStore.clear(deck)
-            sessionId = null
-            UiState.Finished(nextSummary)
-        } else {
-            rememberResumePosition(cards = current.cards, nextIndex = nextIndex)
-            current.copy(
-                index = nextIndex,
-                shuffledChoices = makeChoices(current.cards[nextIndex]),
-                cardSummary = nextSummary,
-                isSubmitting = false,
-                revealedCorrect = null,
-                revealedUserPick = null,
-                revealedOutcome = null,
-                revealedResponseMs = null,
-            )
+        if (nextIndex >= current.cards.size) {
+            onSectionFinished(current, nextSummary)
+            return
         }
+        // Drill cards are in-memory only; don't persist them into the resume store,
+        // which tracks the real phase-1 session.
+        if (!current.isDrill) {
+            rememberResumePosition(cards = current.cards, nextIndex = nextIndex)
+        }
+        _state.value = current.copy(
+            index = nextIndex,
+            shuffledChoices = makeChoices(current.cards[nextIndex]),
+            cardSummary = nextSummary,
+            isSubmitting = false,
+            revealedCorrect = null,
+            revealedUserPick = null,
+            revealedOutcome = null,
+            revealedResponseMs = null,
+        )
         // Start the next card's response timer immediately (refined later by
         // onCardRendered). Never leave it at 0L while a tappable card is shown,
         // or a fast tap would be mis-timed as null -> ABANDONED -> silent skip.
-        cardShownAtMs = if (finished) 0L else System.currentTimeMillis()
+        cardShownAtMs = System.currentTimeMillis()
+        wasBackgrounded = false
+    }
+
+    /** End of a card list: decide between the drill, the next drill pass, or finishing. */
+    private fun onSectionFinished(current: UiState.Reviewing, summary: SessionSummary) {
+        cardShownAtMs = 0L
+        wasBackgrounded = false
+        if (current.isDrill) {
+            // Repeat the still-missed cards, capped so an unlearnable card can't loop forever.
+            if (drillWrong.isEmpty() || drillPass >= MAX_DRILL_PASSES) {
+                finishSession(summary)
+            } else {
+                drillPass += 1
+                val next = drillWrong.values.toList().shuffled()
+                drillWrong = linkedMapOf()
+                emitDrillCard(next, summary)
+            }
+            return
+        }
+        // Phase 1 finished. Offer the drill if anything was missed.
+        if (sessionMisses.isNotEmpty()) {
+            finalSummary = summary
+            resumeStore.clear(deck)
+            _state.value = UiState.DrillIntro(missCount = sessionMisses.size, isNameDeck = deck == Deck.NAME)
+        } else {
+            finishSession(summary)
+        }
+    }
+
+    private fun finishSession(summary: SessionSummary) {
+        resumeStore.clear(deck)
+        sessionId = null
+        _state.value = UiState.Finished(summary)
+    }
+
+    private fun emitDrillCard(cards: List<CardForReview>, summary: SessionSummary) {
+        cardShownAtMs = System.currentTimeMillis()
+        wasBackgrounded = false
+        _state.value = UiState.Reviewing(
+            cards = cards,
+            index = 0,
+            shuffledChoices = makeChoices(cards[0]),
+            cardSummary = summary,
+            isNameDeck = deck == Deck.NAME,
+            isDrill = true,
+        )
+    }
+
+    /** Start the review drill from the DrillIntro screen. */
+    fun startDrill() {
+        val misses = sessionMisses.values.toList().shuffled()
+        if (misses.isEmpty()) {
+            finishSession(finalSummary)
+            return
+        }
+        drillPass = 1
+        drillWrong = linkedMapOf()
+        emitDrillCard(misses, finalSummary)
+    }
+
+    /** Skip the drill and go straight to the summary. */
+    fun skipDrill() = finishSession(finalSummary)
+
+    /**
+     * Drill answer: reinforcement only. Reuses the reveal → continue machinery but
+     * never writes to SRS. Correct clears the card from the round; wrong keeps it for
+     * the next pass.
+     */
+    private fun submitDrill(
+        current: UiState.Reviewing,
+        unsure: Boolean,
+        choice: String?,
+        userPick: String?,
+    ) {
+        val card = current.cards.getOrNull(current.index) ?: return
+        val correct = !unsure && choice == card.correctReading
+        _state.value = if (correct) {
+            current.copy(
+                isSubmitting = false,
+                revealedCorrect = null,
+                revealedUserPick = null,
+                revealedOutcome = ReviewOutcome.MASTERED, // display only; drives auto-advance
+                revealedResponseMs = null,
+            )
+        } else {
+            drillWrong[card.cardId] = card
+            current.copy(
+                isSubmitting = false,
+                revealedCorrect = card.correctReading,
+                revealedUserPick = if (unsure) null else userPick,
+                revealedOutcome = ReviewOutcome.LAPSED, // display only; waits for a tap
+                revealedResponseMs = null,
+            )
+        }
+        cardShownAtMs = 0L
         wasBackgrounded = false
     }
 
@@ -237,7 +353,12 @@ class KanjiSrsViewModel @Inject constructor(
              *  LAPSED the user taps "?ㅼ쓬". Null = normal answering phase. */
             val revealedOutcome: ReviewOutcome? = null,
             val revealedResponseMs: Long? = null,
+            /** True during the post-session review drill: answers are reinforcement
+             *  only and are never written to SRS/mastery. */
+            val isDrill: Boolean = false,
         ) : UiState
+        /** Shown between phase 1 and the review drill so the shuffle isn't a surprise. */
+        data class DrillIntro(val missCount: Int, val isNameDeck: Boolean = false) : UiState
         data class Finished(val summary: SessionSummary) : UiState
     }
 
@@ -268,6 +389,9 @@ class KanjiSrsViewModel @Inject constructor(
 
     companion object {
         const val SESSION_DEFAULT_LIMIT = 20
+
+        /** Cap on review-drill passes so a card the user keeps missing can't loop forever. */
+        const val MAX_DRILL_PASSES = 3
     }
 }
 

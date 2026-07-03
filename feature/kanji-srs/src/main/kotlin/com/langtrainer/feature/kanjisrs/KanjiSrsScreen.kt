@@ -96,11 +96,49 @@ fun KanjiSrsScreen(
                 onCardRendered = viewModel::onCardRendered,
             )
 
+            is KanjiSrsViewModel.UiState.DrillIntro -> DrillIntroState(
+                missCount = state.missCount,
+                onStart = viewModel::startDrill,
+                onSkip = viewModel::skipDrill,
+            )
+
             is KanjiSrsViewModel.UiState.Finished -> FinishedState(
                 summary = state.summary,
                 onRestart = viewModel::restart,
                 onExit = onExit,
             )
+        }
+    }
+}
+
+@Composable
+private fun DrillIntroState(
+    missCount: Int,
+    onStart: () -> Unit,
+    onSkip: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            stringResource(R.string.drill_intro_title),
+            style = MaterialTheme.typography.titleLarge,
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            stringResource(R.string.drill_intro_body, missCount),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.height(24.dp))
+        Button(onClick = onStart, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.drill_start))
+        }
+        Spacer(Modifier.height(8.dp))
+        OutlinedButton(onClick = onSkip, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.drill_skip))
         }
     }
 }
@@ -189,9 +227,17 @@ private fun ReviewingState(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                "${state.index + 1} / ${state.cards.size}",
+                if (state.isDrill) {
+                    stringResource(R.string.drill_round) + "  ${state.index + 1} / ${state.cards.size}"
+                } else {
+                    "${state.index + 1} / ${state.cards.size}"
+                },
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (state.isDrill) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
