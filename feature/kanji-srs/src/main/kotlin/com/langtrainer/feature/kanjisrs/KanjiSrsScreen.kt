@@ -239,7 +239,10 @@ private fun ReviewingState(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.weight(1f),
                 )
-                if (tts.isReady) {
+                // Only after the card is answered: hearing the sentence read aloud
+                // before answering would give away the target reading and defeat the
+                // reading quiz. Post-answer it's for checking pronunciation/pitch.
+                if (tts.isReady && state.revealedOutcome != null) {
                     IconButton(onClick = { tts.speak(card.sentenceJp) }) {
                         Icon(
                             Icons.AutoMirrored.Outlined.VolumeUp,

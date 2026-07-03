@@ -1,15 +1,16 @@
 ﻿# Release Notes
 
-## v0.1.0 — updated build (versionCode 4)
+## v0.1.0 — updated build (versionCode 5)
 
 Audio, distributed as an updated `v0.1.0` APK.
 
 ### Changes
 
-- **Listen to the example sentence.** A speaker button next to each sentence reads
-  it aloud with the device's Japanese text-to-speech voice, so you can check the
-  pronunciation and pitch you couldn't get from reading alone. Shown only when a
-  Japanese voice is available.
+- **Listen to the example sentence.** After you answer, a speaker button next to
+  the sentence reads it aloud with the device's Japanese text-to-speech voice, so
+  you can check the pronunciation and pitch you couldn't get from reading alone.
+  It appears only once the card is answered (so it can't reveal the reading early)
+  and only when a Japanese voice is available.
 - No database changes — existing progress is preserved on update.
 
 ## v0.1.0 — updated build (versionCode 3)
