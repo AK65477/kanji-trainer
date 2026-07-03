@@ -1,5 +1,21 @@
 ﻿# Release Notes
 
+## v0.1.0 — updated build (versionCode 3)
+
+Progress backup + study-order refinements, distributed as an updated `v0.1.0` APK.
+
+### Changes
+
+- **Cross-device progress backup.** Home → "진도 백업 · 기기 간 이동" exports your
+  progress (SRS schedule, mastery, review + session history) to a file you can
+  move to another device and import back. Import replaces local progress after an
+  explicit confirmation, and warns first if this device has newer study activity
+  than the backup. Seed cards stay in the app; only progress is carried.
+- **Same word no longer repeats back-to-back in a session.** The seed groups some
+  cards for the same word at consecutive positions; sessions now spread them apart
+  so a just-answered word isn't asked again immediately.
+- Still no database changes — existing progress is preserved on update.
+
 ## v0.1.0 — updated build (versionCode 2)
 
 Scheduling fix, distributed as an updated `v0.1.0` APK.
