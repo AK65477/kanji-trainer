@@ -38,4 +38,32 @@ object SrsSessionPlanner {
         val newAllowed = min(remainingSlots, max(0, maxNewCards))
         return reviews + newCards.take(newAllowed)
     }
+
+    /**
+     * Reorders [items] so no two adjacent items share the same [keyOf] value when it
+     * can be avoided, while preserving the original order as much as possible.
+     *
+     * The seed groups several cards for the same target word at consecutive ids, so
+     * a session composed in id order can show the same word back-to-back — trivially
+     * easy because the answer is still in short-term memory. This spreads such
+     * duplicates apart (greedy: always emit the earliest remaining item whose key
+     * differs from the one just emitted; fall back to the earliest when every
+     * remaining item repeats it, i.e. the collision is unavoidable).
+     */
+    fun <T, K> spaceOutByKey(items: List<T>, keyOf: (T) -> K): List<T> {
+        if (items.size <= 2) return items
+        val remaining = ArrayDeque(items)
+        val result = ArrayList<T>(items.size)
+        var lastKey: K? = null
+        var hasLast = false
+        while (remaining.isNotEmpty()) {
+            val idx = remaining.indexOfFirst { !hasLast || keyOf(it) != lastKey }
+            val pickIdx = if (idx >= 0) idx else 0
+            val picked = remaining.removeAt(pickIdx)
+            result.add(picked)
+            lastKey = keyOf(picked)
+            hasLast = true
+        }
+        return result
+    }
 }
