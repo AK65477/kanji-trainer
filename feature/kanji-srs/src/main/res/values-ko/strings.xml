@@ -14,6 +14,7 @@
     <string name="ok">알겠습니다</string>
     <string name="help_content_description">도움말</string>
     <string name="how_read">강조된 단어의 읽기를 고르세요</string>
+    <string name="listen_sentence">문장 듣기</string>
     <string name="skipped_will_return">건너뛴 카드예요. 나중에 다시 출제됩니다.</string>
     <string name="skipped_abandoned">30초가 지나 건너뛰었습니다. 너무 오래 고민하지 말고 답해 보세요. 이 카드는 다시 출제됩니다.</string>
     <string name="unsure">모르겠어요</string>

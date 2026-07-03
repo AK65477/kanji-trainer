@@ -63,10 +63,10 @@ app-release.apk
 
 ## Verify The APK
 
-For the current `v0.1.0` release (versionCode 3), the APK file hash is:
+For the current `v0.1.0` release (versionCode 4), the APK file hash is:
 
 ```text
-f21a057778f627d230f7c91701caa4e5af5e0d8ea645a470d7bc024ad8a40f4b
+3bb5eba9a7168defd14086ed7fe843e6fc91ac7a26f52cf45add03ddd740e82b
 ```
 
 The signing certificate SHA-256 is:

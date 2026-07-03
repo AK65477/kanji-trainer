@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -152,6 +153,7 @@ private fun ReviewingState(
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences(SETTINGS_PREFS, Context.MODE_PRIVATE) }
     var autoAdvance by remember { mutableStateOf(prefs.getBoolean(KEY_AUTO_ADVANCE, true)) }
+    val tts = rememberSentenceTts()
 
     LaunchedEffect(state.index) {
         onCardRendered(System.currentTimeMillis())
@@ -223,14 +225,30 @@ private fun ReviewingState(
         Spacer(Modifier.height(40.dp))
 
         Column(modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)) {
-            Text(
-                buildHighlightedSentence(
-                    sentence = card.sentenceJp,
-                    start = card.targetStart,
-                    end = card.targetEnd,
-                ),
-                style = MaterialTheme.typography.headlineMedium,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    buildHighlightedSentence(
+                        sentence = card.sentenceJp,
+                        start = card.targetStart,
+                        end = card.targetEnd,
+                    ),
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.weight(1f),
+                )
+                if (tts.isReady) {
+                    IconButton(onClick = { tts.speak(card.sentenceJp) }) {
+                        Icon(
+                            Icons.AutoMirrored.Outlined.VolumeUp,
+                            contentDescription = stringResource(R.string.listen_sentence),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                }
+            }
             Spacer(Modifier.height(8.dp))
             Text(
                 stringResource(R.string.how_read),

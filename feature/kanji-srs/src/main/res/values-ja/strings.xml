@@ -14,6 +14,7 @@
     <string name="ok">わかりました</string>
     <string name="help_content_description">ヘルプ</string>
     <string name="how_read">ハイライトされた語の読みを選んでください</string>
+    <string name="listen_sentence">文を聞く</string>
     <string name="skipped_will_return">スキップしました。このカードは後で再出題されます。</string>
     <string name="skipped_abandoned">30秒経過したためスキップしました。考え込みすぎず答えてみてください。このカードは再出題されます。</string>
     <string name="unsure">わからない</string>

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Needed on Android 11+ so the app can bind to the system text-to-speech
+         engine (used to read example sentences aloud). -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:name="com.langtrainer.LanguageTrainerApp"
         android:allowBackup="true"

@@ -14,6 +14,7 @@
     <string name="ok">Got it</string>
     <string name="help_content_description">Help</string>
     <string name="how_read">Choose the reading of the highlighted word</string>
+    <string name="listen_sentence">Listen to the sentence</string>
     <string name="skipped_will_return">Skipped. This card will be shown again later.</string>
     <string name="skipped_abandoned">Skipped after 30s. Try to answer without overthinking. This card will be shown again.</string>
     <string name="unsure">I do not know</string>
