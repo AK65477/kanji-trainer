@@ -6,6 +6,7 @@ object Routes {
     const val KANJI_COLLECTION = "kanji_collection"
     const val KANJI_DETAIL_PREFIX = "kanji_detail"
     const val SOURCES = "sources"
+    const val SETTINGS = "settings"
 
     /** Nav arg name for the SRS deck (GENERAL | NAME). */
     const val ARG_DECK = "deck"

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -36,7 +37,7 @@ android {
         applicationId = "io.github.ak65477.kanjitrainer"
         minSdk = 31
         targetSdk = 35
-        versionCode = 2
+        versionCode = 3
         versionName = "0.1.0"
     }
 

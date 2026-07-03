@@ -24,6 +24,17 @@ interface SessionDao {
     @Query("SELECT * FROM session WHERE id = :id")
     suspend fun getById(id: Long): SessionEntity?
 
+    // --- Backup / restore ---
+
+    @Query("SELECT * FROM session")
+    suspend fun getAllSessions(): List<SessionEntity>
+
+    @Query("DELETE FROM session")
+    suspend fun deleteAllSessions()
+
+    @Insert
+    suspend fun insertSessions(sessions: List<SessionEntity>)
+
     @Query(
         """
         SELECT * FROM session

@@ -30,6 +30,7 @@ import com.langtrainer.feature.kanjisrs.collection.KanjiCollectionScreen
 import com.langtrainer.feature.kanjisrs.collection.KanjiDetailScreen
 import com.langtrainer.home.HomeScreen
 import com.langtrainer.nav.Routes
+import com.langtrainer.settings.SettingsScreen
 import com.langtrainer.ui.theme.LanguageTrainerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.ak65477.kanjitrainer.R
@@ -65,10 +66,16 @@ class MainActivity : ComponentActivity() {
                                 onStartNameKanji = { navController.navigate(Routes.kanjiSrs("NAME")) },
                                 onOpenKanjiCollection = { navController.navigate(Routes.KANJI_COLLECTION) },
                                 onOpenSources = { navController.navigate(Routes.SOURCES) },
+                                onOpenSettings = { navController.navigate(Routes.SETTINGS) },
                             )
                         }
                         composable(Routes.SOURCES) {
                             SourcesScreen(
+                                onBack = { navController.popBackStack() },
+                            )
+                        }
+                        composable(Routes.SETTINGS) {
+                            SettingsScreen(
                                 onBack = { navController.popBackStack() },
                             )
                         }

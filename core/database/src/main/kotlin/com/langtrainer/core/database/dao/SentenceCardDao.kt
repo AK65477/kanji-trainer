@@ -32,6 +32,10 @@ interface SentenceCardDao {
     @Query("SELECT * FROM sentence_card WHERE id = :id")
     suspend fun getById(id: Long): SentenceCardEntity?
 
+    /** Total seed card count — a compatibility guard for progress import. */
+    @Query("SELECT COUNT(*) FROM sentence_card")
+    suspend fun countCards(): Int
+
     @Query(
         """
         SELECT sentence_card.* FROM sentence_card
