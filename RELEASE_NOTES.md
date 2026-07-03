@@ -1,5 +1,18 @@
 ﻿# Release Notes
 
+## v0.1.0 — updated build (versionCode 6)
+
+Review drill, distributed as an updated `v0.1.0` APK.
+
+### Changes
+
+- **Review round after a session.** When you miss cards in a session, a short
+  review round lets you re-drill just those cards, shuffled, until you get them
+  right (capped at a few passes). It's reinforcement only — these answers never
+  change your review schedule or mastery, which were already set during the
+  session. Skippable.
+- No database changes — existing progress is preserved on update.
+
 ## v0.1.0 — updated build (versionCode 5)
 
 Audio, distributed as an updated `v0.1.0` APK.
