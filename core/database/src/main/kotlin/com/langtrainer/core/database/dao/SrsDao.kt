@@ -25,6 +25,39 @@ interface SrsDao {
     @Query("SELECT * FROM srs_state")
     fun observeAllStates(): Flow<List<SrsStateEntity>>
 
+    // --- Backup / restore: bulk read + replace of learner progress ---
+
+    @Query("SELECT * FROM srs_state")
+    suspend fun getAllStatesList(): List<SrsStateEntity>
+
+    @Query("DELETE FROM srs_state")
+    suspend fun deleteAllStates()
+
+    @Insert
+    suspend fun insertStates(states: List<SrsStateEntity>)
+
+    /** Timestamp of the most recent review on this device (null if nothing studied yet). */
+    @Query("SELECT MAX(shown_at) FROM review_log")
+    suspend fun latestReviewAt(): Long?
+
+    @Query("SELECT * FROM review_log")
+    suspend fun getAllReviewLogsList(): List<ReviewLogEntity>
+
+    @Query("DELETE FROM review_log")
+    suspend fun deleteAllReviewLogs()
+
+    @Insert
+    suspend fun insertReviewLogs(logs: List<ReviewLogEntity>)
+
+    @Query("SELECT * FROM kanji_mastery")
+    suspend fun getAllMasteryList(): List<KanjiMasteryEntity>
+
+    @Query("DELETE FROM kanji_mastery")
+    suspend fun deleteAllMastery()
+
+    @Insert
+    suspend fun insertMasteryList(rows: List<KanjiMasteryEntity>)
+
     /**
      * Due **review** cards for the **general (JLPT) deck** — cards already seen at
      * least once (bucket != NEW) whose interval has elapsed. Excludes name-only

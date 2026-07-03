@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ViewModule
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -39,6 +40,7 @@ fun HomeScreen(
     onStartNameKanji: () -> Unit,
     onOpenKanjiCollection: () -> Unit,
     onOpenSources: () -> Unit,
+    onOpenSettings: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -121,6 +123,14 @@ fun HomeScreen(
                     Text(stringResource(R.string.home_collection), modifier = Modifier.padding(start = 8.dp))
                 }
             }
+        }
+
+        OutlinedButton(
+            onClick = onOpenSettings,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Icon(Icons.Default.Settings, contentDescription = null)
+            Text("진도 백업 · 기기 간 이동", modifier = Modifier.padding(start = 8.dp))
         }
 
         OutlinedButton(
