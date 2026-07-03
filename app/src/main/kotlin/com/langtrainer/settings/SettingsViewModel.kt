@@ -4,6 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,10 +24,21 @@ class SettingsViewModel @Inject constructor(
         val message: String? = null,
         /** Non-null while an import file is staged, awaiting the overwrite confirmation. */
         val pendingImportText: String? = null,
+        /**
+         * Non-null when the staged backup is *older* than this device's latest study
+         * activity, i.e. importing would overwrite newer local progress. Pre-formatted
+         * caution text for the confirmation dialog.
+         */
+        val importWarning: String? = null,
     )
 
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
+
+    private val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+    private fun formatTime(epochMs: Long): String =
+        if (epochMs <= 0L) "기록 없음" else timeFormat.format(Date(epochMs))
 
     fun exportTo(uri: Uri) = viewModelScope.launch {
         _state.update { it.copy(busy = true, message = null) }
@@ -39,17 +53,32 @@ class SettingsViewModel @Inject constructor(
         val text = backup.readText(uri)
         if (text == null) {
             _state.update { it.copy(busy = false, message = "파일을 읽지 못했습니다.") }
-        } else {
-            _state.update { it.copy(busy = false, pendingImportText = text) }
+            return@launch
+        }
+        when (val preview = backup.previewImport(text)) {
+            is ProgressBackupRepository.ImportPreviewResult.Invalid ->
+                _state.update { it.copy(busy = false, message = "가져올 수 없는 파일입니다: ${preview.reason}") }
+            is ProgressBackupRepository.ImportPreviewResult.Ready -> {
+                val p = preview.preview
+                val warning = if (p.localIsNewer) {
+                    "⚠️ 이 기기에 백업보다 더 최근 학습 기록이 있습니다.\n" +
+                        "· 이 기기 마지막 학습: ${formatTime(p.localLatestActivityMs)}\n" +
+                        "· 백업 마지막 학습: ${formatTime(p.backupLatestActivityMs)}\n" +
+                        "가져오면 이 기기의 더 최신 진도가 사라집니다."
+                } else {
+                    null
+                }
+                _state.update { it.copy(busy = false, pendingImportText = p.text, importWarning = warning) }
+            }
         }
     }
 
-    fun cancelImport() = _state.update { it.copy(pendingImportText = null) }
+    fun cancelImport() = _state.update { it.copy(pendingImportText = null, importWarning = null) }
 
     fun confirmImport() {
         val text = _state.value.pendingImportText ?: return
         viewModelScope.launch {
-            _state.update { it.copy(busy = true, pendingImportText = null, message = null) }
+            _state.update { it.copy(busy = true, pendingImportText = null, importWarning = null, message = null) }
             val result = backup.importJson(text)
             _state.update {
                 it.copy(

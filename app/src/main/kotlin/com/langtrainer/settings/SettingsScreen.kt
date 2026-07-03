@@ -95,15 +95,21 @@ fun SettingsScreen(
     }
 
     if (state.pendingImportText != null) {
+        val warning = state.importWarning
         AlertDialog(
             onDismissRequest = { viewModel.cancelImport() },
-            title = { Text("이 기기의 진도를 덮어쓸까요?") },
-            text = {
-                Text(
-                    "가져오면 이 기기의 현재 학습 진도가 백업 파일 내용으로 완전히 교체됩니다. 되돌릴 수 없습니다.",
-                )
+            title = {
+                Text(if (warning != null) "정말 덮어쓸까요? (최신 진도 손실 위험)" else "이 기기의 진도를 덮어쓸까요?")
             },
-            confirmButton = { TextButton(onClick = { viewModel.confirmImport() }) { Text("덮어쓰기") } },
+            text = {
+                val base = "가져오면 이 기기의 현재 학습 진도가 백업 파일 내용으로 완전히 교체됩니다. 되돌릴 수 없습니다."
+                Text(if (warning != null) "$warning\n\n$base" else base)
+            },
+            confirmButton = {
+                TextButton(onClick = { viewModel.confirmImport() }) {
+                    Text(if (warning != null) "그래도 덮어쓰기" else "덮어쓰기")
+                }
+            },
             dismissButton = { TextButton(onClick = { viewModel.cancelImport() }) { Text("취소") } },
         )
     }

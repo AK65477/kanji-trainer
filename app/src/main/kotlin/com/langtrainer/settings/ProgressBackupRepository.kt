@@ -68,6 +68,53 @@ class ProgressBackupRepository @Inject constructor(
         data class Failure(val reason: String) : ImportResult
     }
 
+    data class ImportPreview(
+        val text: String,
+        val backupExportedAtEpochMs: Long,
+        val backupLatestActivityMs: Long,
+        val localLatestActivityMs: Long,
+    ) {
+        /**
+         * True when this device has study activity newer than anything in the
+         * backup, so importing would discard newer local progress. Advisory only —
+         * device clocks can differ — so callers should warn, not block.
+         */
+        val localIsNewer: Boolean get() = localLatestActivityMs > backupLatestActivityMs
+    }
+
+    sealed interface ImportPreviewResult {
+        data class Ready(val preview: ImportPreview) : ImportPreviewResult
+        data class Invalid(val reason: String) : ImportPreviewResult
+    }
+
+    /**
+     * Validates a candidate backup and compares its newest study activity with this
+     * device's, so the UI can flag when importing would overwrite newer local work.
+     * Does not modify anything.
+     */
+    suspend fun previewImport(text: String): ImportPreviewResult {
+        val (backup, validation) = ProgressBackupCodec.decodeAndValidate(
+            text = text,
+            localSeedCardCount = cardDao.countCards(),
+            localSchemaVersion = AppDatabase.VERSION,
+        )
+        if (backup == null || validation is BackupValidation.Rejected) {
+            return ImportPreviewResult.Invalid(
+                (validation as? BackupValidation.Rejected)?.reason ?: "알 수 없는 오류",
+            )
+        }
+        val backupLatest = backup.reviewLogs.maxOfOrNull { it.shownAtEpochMs } ?: backup.exportedAtEpochMs
+        val localLatest = srsDao.latestReviewAt() ?: 0L
+        return ImportPreviewResult.Ready(
+            ImportPreview(
+                text = text,
+                backupExportedAtEpochMs = backup.exportedAtEpochMs,
+                backupLatestActivityMs = backupLatest,
+                localLatestActivityMs = localLatest,
+            ),
+        )
+    }
+
     /**
      * Validates then, only if valid, atomically replaces every progress table with
      * the backup's rows. Existing progress is overwritten — callers must confirm

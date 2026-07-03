@@ -36,6 +36,10 @@ interface SrsDao {
     @Insert
     suspend fun insertStates(states: List<SrsStateEntity>)
 
+    /** Timestamp of the most recent review on this device (null if nothing studied yet). */
+    @Query("SELECT MAX(shown_at) FROM review_log")
+    suspend fun latestReviewAt(): Long?
+
     @Query("SELECT * FROM review_log")
     suspend fun getAllReviewLogsList(): List<ReviewLogEntity>
 
