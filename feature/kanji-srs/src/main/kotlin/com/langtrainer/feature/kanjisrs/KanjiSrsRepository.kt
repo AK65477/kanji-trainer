@@ -48,12 +48,16 @@ class KanjiSrsRepository @Inject constructor(
             Deck.GENERAL -> srsDao.getNewCardsGeneral(limit = maxNew)
             Deck.NAME -> srsDao.getNewCardsNameOnly(limit = maxNew)
         }
-        return SrsSessionPlanner.plan(
+        val planned = SrsSessionPlanner.plan(
             dueReviews = dueReviews,
             newCards = newCards,
             sessionLimit = limit,
             maxNewCards = maxNew,
         ).mapNotNull { state -> state.toCardForReview() }
+        // The seed groups some same-word cards at consecutive ids, so an id-ordered
+        // session can show the same target word back-to-back — trivially easy. Spread
+        // duplicates apart while keeping the reviews-first composition.
+        return SrsSessionPlanner.spaceOutByKey(planned) { it.targetText }
     }
 
     suspend fun fetchCardsByIds(cardIds: List<Long>): List<CardForReview> =
