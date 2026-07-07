@@ -1,4 +1,14 @@
-﻿# Release Notes
+# Release Notes
+
+## v0.1.1 — known-card retirement (versionCode 7)
+
+Manual retirement for cards you already know perfectly, distributed as a `v0.1.1` APK.
+
+### Changes
+
+- **Mark a card as already mastered.** During the answer phase, tap `I know this perfectly` / `완벽히 알아요` / `完全に覚えています` and confirm once to mark that card mastered and keep it out of future sessions.
+- The action deliberately does not write a review log entry, so today's review count and timed-review history are not inflated.
+- No database schema changes — existing progress is preserved on update. The card is stored using the existing SRS state table with a far-future due date.
 
 ## v0.1.0 — updated build (versionCode 6)
 

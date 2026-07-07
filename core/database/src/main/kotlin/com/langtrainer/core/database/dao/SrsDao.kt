@@ -248,4 +248,36 @@ interface SrsDao {
             )
         }
     }
+
+    /**
+     * Retire a card the learner already knows perfectly: write its [stateEntity]
+     * (pushed far into the future so it never comes due) and bump KanjiMastery by
+     * [kanjiDeltas]. Deliberately writes **no** review_log row — this is a manual
+     * "I know this" action, not a timed review, so it must not inflate review stats.
+     */
+    @Transaction
+    suspend fun retireCard(
+        stateEntity: SrsStateEntity,
+        kanjiDeltas: Map<Long, Int>,
+        masteryMinCards: Int,
+        nowEpochMs: Long,
+    ) {
+        upsertState(stateEntity)
+        for ((kanjiId, delta) in kanjiDeltas) {
+            val current = getMastery(kanjiId) ?: KanjiMasteryEntity(
+                kanjiId = kanjiId,
+                qualifyingCardCount = 0,
+                isMastered = false,
+                updatedAtEpochMs = nowEpochMs,
+            )
+            val nextCount = (current.qualifyingCardCount + delta).coerceAtLeast(0)
+            upsertMastery(
+                current.copy(
+                    qualifyingCardCount = nextCount,
+                    isMastered = nextCount >= masteryMinCards,
+                    updatedAtEpochMs = nowEpochMs,
+                ),
+            )
+        }
+    }
 }

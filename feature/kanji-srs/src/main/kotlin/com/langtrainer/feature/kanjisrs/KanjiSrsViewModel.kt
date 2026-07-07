@@ -1,4 +1,4 @@
-﻿package com.langtrainer.feature.kanjisrs
+package com.langtrainer.feature.kanjisrs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -98,6 +98,22 @@ class KanjiSrsViewModel @Inject constructor(
      */
     fun onUnsure() {
         submit(isCorrectOverride = false, choice = null, unsure = true, userPick = null)
+    }
+
+    fun onRetireKnown() {
+        val current = _state.value as? UiState.Reviewing ?: return
+        if (current.isSubmitting || current.isDrill || current.revealedOutcome != null) return
+        val card = current.cards.getOrNull(current.index) ?: return
+        val now = System.currentTimeMillis()
+        _state.value = current.copy(isSubmitting = true)
+
+        viewModelScope.launch {
+            repository.retireCard(card = card, nowEpochMs = now)
+            val updatedSummary = current.cardSummary.update(ReviewOutcome.MASTERED)
+            sessionId?.let { repository.recordSessionProgress(it, now, updatedSummary.totalAttempts) }
+            rememberResumePosition(cards = current.cards, nextIndex = current.index + 1)
+            advance(current.copy(isSubmitting = false), updatedSummary)
+        }
     }
 
     private fun submit(

@@ -1,4 +1,4 @@
-﻿package com.langtrainer.feature.kanjisrs
+package com.langtrainer.feature.kanjisrs
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -92,6 +92,7 @@ fun KanjiSrsScreen(
                 state = state,
                 onAnswer = viewModel::onAnswer,
                 onUnsure = viewModel::onUnsure,
+                onRetireKnown = viewModel::onRetireKnown,
                 onContinue = viewModel::onContinueAfterReveal,
                 onCardRendered = viewModel::onCardRendered,
             )
@@ -181,12 +182,14 @@ private fun ReviewingState(
     state: KanjiSrsViewModel.UiState.Reviewing,
     onAnswer: (String) -> Unit,
     onUnsure: () -> Unit,
+    onRetireKnown: () -> Unit,
     onContinue: () -> Unit,
     onCardRendered: (Long) -> Unit,
 ) {
     val card = state.cards[state.index]
     val progress = (state.index + 1).toFloat() / state.cards.size.toFloat()
     var showHelp by remember { mutableStateOf(false) }
+    var showRetireConfirm by remember(state.index) { mutableStateOf(false) }
 
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences(SETTINGS_PREFS, Context.MODE_PRIVATE) }
@@ -211,6 +214,28 @@ private fun ReviewingState(
             },
             confirmButton = {
                 TextButton(onClick = { showHelp = false }) { Text(stringResource(R.string.ok)) }
+            },
+        )
+    }
+    if (showRetireConfirm) {
+        AlertDialog(
+            onDismissRequest = { showRetireConfirm = false },
+            title = { Text(stringResource(R.string.retire_confirm_title)) },
+            text = { Text(stringResource(R.string.retire_confirm_body)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showRetireConfirm = false
+                        onRetireKnown()
+                    },
+                ) {
+                    Text(stringResource(R.string.retire_confirm_action))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showRetireConfirm = false }) {
+                    Text(stringResource(R.string.cancel))
+                }
             },
         )
     }
@@ -333,6 +358,22 @@ private fun ReviewingState(
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Text(stringResource(R.string.unsure), style = MaterialTheme.typography.bodyMedium)
+            }
+            if (!state.isDrill) {
+                OutlinedButton(
+                    onClick = { showRetireConfirm = true },
+                    enabled = !state.isSubmitting,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                    ),
+                ) {
+                    Text(
+                        stringResource(R.string.retire_known),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             }
         } else {
             RevealedAnswer(

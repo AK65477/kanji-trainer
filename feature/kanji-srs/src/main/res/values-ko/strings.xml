@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="back">뒤로</string>
     <string name="auto_advance">정답 시 자동 진행</string>
@@ -12,6 +12,7 @@
     <string name="help_3">2초 안에 정확히 고르면 Mastered 후보가 됩니다. 느리거나 틀리면 더 가까운 시점에 다시 만납니다.</string>
     <string name="help_4">막히면 추측하지 말고 모르겠어요를 누르세요. 정답을 보고 곧 다시 복습하는 편이 더 깔끔합니다.</string>
     <string name="ok">알겠습니다</string>
+    <string name="cancel">취소</string>
     <string name="help_content_description">도움말</string>
     <string name="how_read">강조된 단어의 읽기를 고르세요</string>
     <string name="listen_sentence">문장 듣기</string>
@@ -23,6 +24,10 @@
     <string name="skipped_will_return">건너뛴 카드예요. 나중에 다시 출제됩니다.</string>
     <string name="skipped_abandoned">30초가 지나 건너뛰었습니다. 너무 오래 고민하지 말고 답해 보세요. 이 카드는 다시 출제됩니다.</string>
     <string name="unsure">모르겠어요</string>
+    <string name="retire_known">완벽히 알아요</string>
+    <string name="retire_confirm_title">이 카드를 앞으로 숨길까요?</string>
+    <string name="retire_confirm_body">정말 복습이 필요 없을 만큼 확실할 때만 사용하세요. 완벽 숙지로 처리되고 세션에 다시 나오지 않습니다.</string>
+    <string name="retire_confirm_action">완벽 숙지 처리</string>
     <string name="correct_answer">정답: %1$s</string>
     <string name="correct_answer_wrong_pick">정답: %1$s. 곧 다시 출제됩니다.</string>
     <string name="next">다음</string>

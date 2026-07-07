@@ -1,4 +1,4 @@
-﻿package com.langtrainer.feature.kanjisrs
+package com.langtrainer.feature.kanjisrs
 
 import com.langtrainer.core.database.dao.SessionDao
 import com.langtrainer.core.database.dao.SentenceCardDao
@@ -101,6 +101,27 @@ class KanjiSrsRepository @Inject constructor(
         return result.outcome
     }
 
+    suspend fun retireCard(card: CardForReview, nowEpochMs: Long) {
+        val wasQualifying = card.state.consecutiveMastered >= srsConfig.qualifyingStreak
+        val retiredState = card.state.copy(
+            bucket = Bucket.MASTERED,
+            consecutiveMastered = maxOf(card.state.consecutiveMastered, srsConfig.qualifyingStreak),
+            nextDueAtEpochMs = nowEpochMs + RETIRED_INTERVAL_DAYS * MILLIS_PER_DAY,
+            intervalDays = RETIRED_INTERVAL_DAYS.toInt(),
+            easeFactor = maxOf(card.state.easeFactor, srsConfig.initialEaseFactor),
+        )
+        srsDao.retireCard(
+            stateEntity = retiredState.toEntity(),
+            kanjiDeltas = if (wasQualifying) {
+                emptyMap()
+            } else {
+                card.linkedKanjiIds.associateWith { +1 }
+            },
+            masteryMinCards = srsConfig.masteryMinCards,
+            nowEpochMs = nowEpochMs,
+        )
+    }
+
     suspend fun startTrainingSession(nowEpochMs: Long): Long {
         // Discard any session left open by a previous abrupt exit (e.g. process
         // death before the first answer). Otherwise a stale open row could
@@ -170,6 +191,9 @@ class KanjiSrsRepository @Inject constructor(
         easeFactor = easeFactor,
     )
 }
+
+private const val RETIRED_INTERVAL_DAYS = 36500L
+private const val MILLIS_PER_DAY = 24L * 60L * 60L * 1000L
 
 /**
  * Which study track a review session draws from.

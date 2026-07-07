@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="back">Back</string>
     <string name="auto_advance">Auto-advance on correct</string>
@@ -12,6 +12,7 @@
     <string name="help_3">A correct answer within 2 seconds can become a Mastered candidate. Slow or missed cards come back sooner.</string>
     <string name="help_4">If you are stuck, tap I do not know instead of guessing. Seeing the answer and reviewing soon is cleaner.</string>
     <string name="ok">Got it</string>
+    <string name="cancel">Cancel</string>
     <string name="help_content_description">Help</string>
     <string name="how_read">Choose the reading of the highlighted word</string>
     <string name="listen_sentence">Listen to the sentence</string>
@@ -23,6 +24,10 @@
     <string name="skipped_will_return">Skipped. This card will be shown again later.</string>
     <string name="skipped_abandoned">Skipped after 30s. Try to answer without overthinking. This card will be shown again.</string>
     <string name="unsure">I do not know</string>
+    <string name="retire_known">I know this perfectly</string>
+    <string name="retire_confirm_title">Hide this card permanently?</string>
+    <string name="retire_confirm_body">Use this only when you are sure this card does not need review. It will be marked mastered and will no longer appear in sessions.</string>
+    <string name="retire_confirm_action">Mark mastered</string>
     <string name="correct_answer">Answer: %1$s</string>
     <string name="correct_answer_wrong_pick">Answer: %1$s. This card will be shown again soon.</string>
     <string name="next">Next</string>

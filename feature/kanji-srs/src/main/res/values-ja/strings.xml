@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="back">戻る</string>
     <string name="auto_advance">正解時に自動で進む</string>
@@ -12,6 +12,7 @@
     <string name="help_3">2秒以内に正しく選べるとMastered候補になります。遅い答えや間違いは近い時期にまた出ます。</string>
     <string name="help_4">迷ったら推測せず、わからないを押してください。答えを見て、近いうちに復習するほうがきれいです。</string>
     <string name="ok">わかりました</string>
+    <string name="cancel">キャンセル</string>
     <string name="help_content_description">ヘルプ</string>
     <string name="how_read">ハイライトされた語の読みを選んでください</string>
     <string name="listen_sentence">文を聞く</string>
@@ -23,6 +24,10 @@
     <string name="skipped_will_return">スキップしました。このカードは後で再出題されます。</string>
     <string name="skipped_abandoned">30秒経過したためスキップしました。考え込みすぎず答えてみてください。このカードは再出題されます。</string>
     <string name="unsure">わからない</string>
+    <string name="retire_known">完全に覚えています</string>
+    <string name="retire_confirm_title">このカードを今後非表示にしますか？</string>
+    <string name="retire_confirm_body">復習が不要だと確信できる場合だけ使ってください。完全習得として扱い、今後のセッションには出しません。</string>
+    <string name="retire_confirm_action">完全習得にする</string>
     <string name="correct_answer">答え: %1$s</string>
     <string name="correct_answer_wrong_pick">答え: %1$s。近いうちに再出題されます。</string>
     <string name="next">次へ</string>

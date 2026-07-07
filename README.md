@@ -1,4 +1,4 @@
-﻿<p align="center">
+<p align="center">
   <img src="kanji_app_icon.png" alt="Kanji Trainer app icon" width="120" height="120">
 </p>
 
@@ -63,10 +63,10 @@ app-release.apk
 
 ## Verify The APK
 
-For the current `v0.1.0` release (versionCode 6), the APK file hash is:
+For the current `v0.1.1` release (versionCode 7), the APK file hash is:
 
 ```text
-cd037d07c1a244bd43b2082159076adbfc8421b252eea8dd79f17f0cc6c07200
+1b57998a167ddbbb143329bf710e061470f553aa1b41ef8bd4b37050da905217
 ```
 
 The signing certificate SHA-256 is:
